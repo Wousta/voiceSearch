@@ -9,7 +9,7 @@ package other;
 	 */
 	public class JavaSoundRecorder {
 	    // record duration, in milliseconds
-	    static final long RECORD_TIME = 15000;  // 1 minute
+	    static final long RECORD_TIME = 5000;  // 1 minute
 	 
 	    // path of the wav file
 	    File wavFile = new File("sound.wav");
@@ -71,7 +71,14 @@ package other;
 	     * Closes the target data line to finish capturing and recording
 	     */
 	    public void finish() {
-	        line.stop();
+	    	
+	        try {
+				line.stop();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				System.out.println("Error al capturar audio, prueba a conectar un micro si no hay ninguno conectado");
+				return;
+			}
 	        line.close();
 	        System.out.println("Finished");
 	    }

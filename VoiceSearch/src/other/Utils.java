@@ -14,6 +14,7 @@ import jade.lang.acl.ACLMessage;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Iterator;
+import java.util.List;
 
 public class Utils 
 {
@@ -80,7 +81,7 @@ public class Utils
 		}
     }
     
-    public static void enviarMensaje(Agent agent, String tipo, String[] objeto) throws IOException
+    public static void enviarMensaje(Agent agent, String tipo, List<String> objeto) throws IOException
     {
         DFAgentDescription[] dfd;
         dfd=buscarAgentes(agent, tipo);
@@ -100,7 +101,7 @@ public class Utils
 			//cambio la codificacion de la carta
 			aclMessage.getEnvelope().setPayloadEncoding("ISO8859_1");
 		    //aclMessage.getEnvelope().setAclRepresentation(FIPANames.ACLCodec.XML); 
-			aclMessage.setContentObject(objeto);
+			aclMessage.setContentObject((Serializable) objeto);
 			agent.send(aclMessage);       		
 		}
     }

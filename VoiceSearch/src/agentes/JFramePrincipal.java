@@ -1,6 +1,8 @@
 package agentes;
 
 import agentes.AgenteInterfaz;
+import jade.core.Agent;
+
 import java.awt.EventQueue;
 import java.awt.Font;
 
@@ -18,31 +20,32 @@ import java.awt.event.ActionEvent;
 @SuppressWarnings("serial")
 public class JFramePrincipal extends JFrame {
 	private JFrame frame;
-	public JTextArea area;
+	private JTextArea area;
 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					JFramePrincipal window = new JFramePrincipal();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					JFramePrincipal window = new JFramePrincipal();
+//					window.frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	public JFramePrincipal() {
 	}
 
-	public JFramePrincipal(AgenteInterfaz a) {
+	public JFramePrincipal(Agent myAgent, Object[] objects) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setBackground(Color.black);
 		setBounds(100, 100, 694, 533);
 		getContentPane().setLayout(null);
 
-		JLabel etiqueta=new JLabel("Ed sheeran");//Cambiar esto a lo que reciba del anterior agente
+		//
+		JLabel etiqueta=new JLabel((String) objects[0]);//Cambiar esto a lo que reciba del anterior agente
 		etiqueta.setBounds(61,58,190,55);
 		etiqueta.setForeground(Color.white);
 		etiqueta.setFont(new Font("Helvetica", Font.PLAIN, 30));
@@ -52,9 +55,8 @@ public class JFramePrincipal extends JFrame {
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//Enviamos el texto que ha introducido el Cliente
-				String texto = etiqueta.getText();
-				a.text = texto;
-				a.doWake();
+//				String texto = etiqueta.getText();
+//				String artistAbstract; 
 			}
 		});
 		btnBuscar.setBounds(391, 55, 200, 50);
@@ -63,22 +65,23 @@ public class JFramePrincipal extends JFrame {
 		/*JTextArea textArea = new JTextArea();
 		textArea.setBounds(61, 53, 190, 55);
 		getContentPane().add(textArea);*/
-
-		JLabel lblIntroduzcaTextoA = new JLabel("Se ha detectado el siguiente artista:");
-		lblIntroduzcaTextoA.setBounds(61, 46, 232, 20);
-		lblIntroduzcaTextoA.setForeground(Color.white);
-		getContentPane().add(lblIntroduzcaTextoA);
-
-		JTextArea textArea_1 = new JTextArea();
-		textArea_1.setBounds(61, 192, 561, 238);
-		getContentPane().add(textArea_1);
-		area = textArea_1;
-
 		JLabel lblResultadoBsqueda = new JLabel("Resultado de la b\u00FAsqueda:");
 		lblResultadoBsqueda.setBounds(61, 155, 200, 20);
 		lblResultadoBsqueda.setForeground(Color.white);
 		getContentPane().add(lblResultadoBsqueda);
 
+		
+		JLabel lblIntroduzcaTextoA = new JLabel("Se ha detectado el siguiente artista:");
+		lblIntroduzcaTextoA.setBounds(61, 46, 232, 20);
+		lblIntroduzcaTextoA.setForeground(Color.white);
+		getContentPane().add(lblIntroduzcaTextoA);
+
+		JTextArea textArea_1 = new JTextArea((String) objects[1]);
+		textArea_1.setBounds(61, 192, 561, 238);
+		getContentPane().add(textArea_1);
+		area = textArea_1;
+		myAgent.doWake();
+		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		JMenu mnFile = new JMenu("File");
@@ -90,7 +93,7 @@ public class JFramePrincipal extends JFrame {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	public void initialize() {
 
 		frame = new JFrame();
 		frame.setBounds(0, 0, 1000, 300);
@@ -99,5 +102,17 @@ public class JFramePrincipal extends JFrame {
 
 	public JTextArea getArea() {
 		return area;
+	}
+
+	public JFrame getFrame() {
+		return frame;
+	}
+
+	public void setFrame(JFrame frame) {
+		this.frame = frame;
+	}
+
+	public void setArea(JTextArea area) {
+		this.area = area;
 	}
 }

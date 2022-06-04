@@ -2,10 +2,12 @@ package agentes.launcher;
 
 import jade.core.Profile;
 import jade.core.ProfileImpl;
+import jade.wrapper.ControllerException;
 import jade.wrapper.StaleProxyException;
 import java.io.IOException;
 import agentes.AgenteMicrophone;
 import agentes.AgenteVoiceRecognizer;
+import agentes.JFramePrincipal;
 import agentes.AgenteInterfaz;
 
 
@@ -13,7 +15,7 @@ public class Main {
 
 	private static jade.wrapper.AgentContainer cc;
 	
-    private static void loadBoot(){
+    private static void loadBoot() throws ControllerException{
         jade.core.Runtime rt = jade.core.Runtime.instance();
         rt.setCloseVM(true);
         Profile profile = new ProfileImpl(null, 1200, null);
@@ -33,7 +35,7 @@ public class Main {
         }
     }
     
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ControllerException {
         System.out.println("Comenzando...");
         loadBoot();
     }

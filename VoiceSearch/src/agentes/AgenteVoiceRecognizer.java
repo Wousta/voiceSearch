@@ -12,6 +12,9 @@ import jade.core.behaviours.*;
 import jade.domain.FIPAAgentManagement.Envelope;
 import jade.lang.acl.*;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.*;
 
 public class AgenteVoiceRecognizer extends AgentBase {
@@ -63,6 +66,9 @@ public class AgenteVoiceRecognizer extends AgentBase {
 			}
 			String abstrac = r.getAbstract().getAbstractText();
 			String res[] = {author, abstrac};
+			List<String> result = new ArrayList<String>();
+			result.add(author);
+			result.add(abstrac);
 			
 			/******************  ENVÍO  ********************/
 
@@ -70,17 +76,18 @@ public class AgenteVoiceRecognizer extends AgentBase {
 				//Utils.enviarMensaje(this.myAgent, "Interfaz", res);
 				ACLMessage aclMessage = new ACLMessage(ACLMessage.REQUEST);
 				
-				AID aid = new AID();
-				aid.setName("Interfaz@192.168.1.22:1200/JADE");
-				aclMessage.addReceiver(aid);
-				
-			    aclMessage.setOntology("ontologia");
-			    aclMessage.setLanguage(new SLCodec().getName());
-			    aclMessage.setEnvelope(new Envelope());
-				aclMessage.getEnvelope().setPayloadEncoding("ISO8859_1");
-				aclMessage.setContentObject(res);
-				this.myAgent.send(aclMessage);      
-			} catch (IOException e) {
+//				AID aid = new AID();
+//				aid.setName("Interfaz@192.168.1.22:1200/JADE");
+//				aclMessage.addReceiver(aid);
+//				
+//			    aclMessage.setOntology("ontologia");
+//			    aclMessage.setLanguage(new SLCodec().getName());
+//			    aclMessage.setEnvelope(new Envelope());
+//				aclMessage.getEnvelope().setPayloadEncoding("ISO8859_1");
+//				aclMessage.setContentObject(res);
+//				this.myAgent.send(aclMessage); 
+				Utils.enviarMensaje(this.myAgent, "Interfaz", result);
+			} catch (Exception e) {
 				e.printStackTrace();
 				}
 			System.out.println("Información de " + author + " enviada a la interfaz");

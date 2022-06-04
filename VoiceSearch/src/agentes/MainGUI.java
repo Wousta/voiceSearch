@@ -25,7 +25,7 @@ public class MainGUI extends Thread {
 	public void run() {
 		//El interfaz se basará en un contendor de tipo Jframe, Lo personalizamos para que pueda gestionar la información del hilo
 		JFrame jFrame;
-		jFrame = new JFramePrincipal(agenteInterfaz);
+		jFrame = new JFramePrincipal(agenteInterfaz, null);
 		frame = (JFramePrincipal) jFrame;
 		jFrame.setTitle("Voice Search");
 		jFrame.setResizable(false);	
