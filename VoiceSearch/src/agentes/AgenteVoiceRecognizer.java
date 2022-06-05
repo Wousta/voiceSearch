@@ -18,8 +18,8 @@ import java.util.List;
 import org.json.*;
 
 public class AgenteVoiceRecognizer extends AgentBase {
-	
-	
+
+
 	private static final long serialVersionUID = 1L;
 	public static final String NICKNAME = "Recognizer";
 
@@ -30,7 +30,7 @@ public class AgenteVoiceRecognizer extends AgentBase {
 		registerAgentDF();
 		addBehaviour(new Reconoce());
 	}
-	
+
 	private class Reconoce extends OneShotBehaviour{
 
 		private static final long serialVersionUID = 1L;
@@ -38,59 +38,46 @@ public class AgenteVoiceRecognizer extends AgentBase {
 		@Override
 		public void action() {
 			ACLMessage msg = this.myAgent.blockingReceive(MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.REQUEST),
-																	  		  MessageTemplate.MatchOntology("ontologia")));
+					MessageTemplate.MatchOntology("ontologia")));
 			System.out.println("Agente VoiceRecognizer");
 			System.out.println("Mensaje: " + (String) msg.getContent());
-			
-			/******************  RECONOCIMIENTO  ********************/
-			
-			String recog = IdentifyProtocolV1.main(msg.getContent());
-			
-			JSONObject json = new JSONObject(recog);
-			JSONArray artists = json.getJSONObject("metadata").getJSONArray("music").getJSONObject(0).getJSONObject("external_metadata")
-					 .getJSONObject("spotify").getJSONArray("artists");
-			String[] artistas = new String[artists.length()];
-			for(int i = 0; i<artists.length();i++) {
-				artistas[i] = artists.getJSONObject(i).get("name").toString();
-			}
-			
-			/******************  BÚSQUEDA  ********************/
-			
-			DuckDuckGo ddg = new DuckDuckGo();
-			Response r = null;
-			String author = artistas[0];
-			try {
-				r = ddg.query(author);
-			} catch (JSONException | IOException e) {
-				e.printStackTrace();
-			}
-			String abstrac = r.getAbstract().getAbstractText();
-			String res[] = {author, abstrac};
-			List<String> result = new ArrayList<String>();
-			result.add(author);
-			result.add(abstrac);
-			
-			/******************  ENVÍO  ********************/
 
+			/******************  RECONOCIMIENTO  ********************/
+
+			String[] artistas;
 			try {
-				//Utils.enviarMensaje(this.myAgent, "Interfaz", res);
-				ACLMessage aclMessage = new ACLMessage(ACLMessage.REQUEST);
-				
-//				AID aid = new AID();
-//				aid.setName("Interfaz@192.168.1.22:1200/JADE");
-//				aclMessage.addReceiver(aid);
-//				
-//			    aclMessage.setOntology("ontologia");
-//			    aclMessage.setLanguage(new SLCodec().getName());
-//			    aclMessage.setEnvelope(new Envelope());
-//				aclMessage.getEnvelope().setPayloadEncoding("ISO8859_1");
-//				aclMessage.setContentObject(res);
-//				this.myAgent.send(aclMessage); 
-				Utils.enviarMensaje(this.myAgent, "Interfaz", result);
-			} catch (Exception e) {
-				e.printStackTrace();
+				String recog = IdentifyProtocolV1.main(msg.getContent());
+
+				JSONObject json = new JSONObject(recog);
+				JSONArray artists = json.getJSONObject("metadata").getJSONArray("music").getJSONObject(0).getJSONObject("external_metadata")
+						.getJSONObject("spotify").getJSONArray("artists");
+				artistas = new String[artists.length()];
+				for(int i = 0; i<artists.length();i++) {
+					artistas[i] = artists.getJSONObject(i).get("name").toString();
 				}
-			System.out.println("Información de " + author + " enviada a la interfaz");
+
+				/******************  BÚSQUEDA  ********************/
+
+				DuckDuckGo ddg = new DuckDuckGo();
+				Response r = null;
+				String author = artistas[0];
+				r = ddg.query(author);
+
+				String abstrac = r.getAbstract().getAbstractText();
+				List<String> result = new ArrayList<String>();
+				result.add(author);
+				result.add(abstrac);
+
+				/******************  ENVÍO  ********************/
+
+
+				//Utils.enviarMensaje(this.myAgent, "Interfaz", res);
+				ACLMessage aclMessage = new ACLMessage(ACLMessage.REQUEST);				
+				Utils.enviarMensaje(this.myAgent, "Interfaz", result);
+				System.out.println("Información de " + author + " enviada a la interfaz");
+			} catch (Exception e) {
+				System.out.println("cancion no encontrada, intentalo de nuevo");
+			}
 		}
 	}
 }

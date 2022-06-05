@@ -1,6 +1,8 @@
 package agentes;
 
 import jade.core.behaviours.*;
+import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
 import other.JavaSoundRecorder;
 import other.Utils;
 import agentes.launcher.AgentBase;
@@ -31,6 +33,7 @@ public class AgenteMicrophone extends AgentBase {
 			System.out.println("Mensaje enviado desde grabadora a VoiceRecognizer"); 
 		}
 	}
+	
 
 	public void recordSound() {
 		final JavaSoundRecorder recorder = new JavaSoundRecorder();

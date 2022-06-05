@@ -19,8 +19,8 @@ public class Main {
         jade.core.Runtime rt = jade.core.Runtime.instance();
         rt.setCloseVM(true);
         Profile profile = new ProfileImpl(null, 1200, null);
-        cc = rt.createMainContainer(profile);
         try {
+        cc = rt.createMainContainer(profile);
             ProfileImpl pContainer = new ProfileImpl(null, 1200, null);
             rt.createAgentContainer(pContainer);
             cc.createNewAgent("rma","jade.tools.rma.rma", new Object[0]).start();
@@ -29,13 +29,17 @@ public class Main {
             cc.createNewAgent(AgenteInterfaz.NICKNAME, AgenteInterfaz.class.getName(), new Object[]{"0"}).start();
             System.out.println("Agentes y contenedor creados");
         } catch (StaleProxyException e) {
-            System.err.println("Error en el inicio de los agentes");
+            System.err.println("Error en el inicio de los agentes, cierra la pestaña abierta");
             e.printStackTrace();
             System.exit(1);
         }
     }
     
-    public static void main(String[] args) throws IOException, ControllerException {
+    public static jade.wrapper.AgentContainer getCc() {
+		return cc;
+	}
+
+	public static void main(String[] args) throws IOException, ControllerException {
         System.out.println("Comenzando...");
         loadBoot();
     }

@@ -19,7 +19,6 @@ import jade.lang.acl.UnreadableException;
 
 public class AgenteInterfaz extends AgentBase {
 	public String text;
-	String temp;
 
 	private static final long serialVersionUID = 1L;
 	public static final String NICKNAME = "Interfaz";
@@ -29,15 +28,11 @@ public class AgenteInterfaz extends AgentBase {
 		super.setup();
 		this.type=AgentModel.INTERFAZ;
 		registerAgentDF();
-		//addBehaviour(new Reconoce());
 
-//		MainGUI gui = new MainGUI(this.getLocalName(), this);
-//		gui.run();
 		addBehaviour(new CyclicBehaviour(this) {
 			private static final long serialVersionUID = 1L;
 
 			public void action() {
-				//ACLMessage msg = blockingReceive(MessageTemplate.MatchPerformative(ACLMessage.INFORM));
 				ACLMessage msg = this.myAgent.blockingReceive(MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.REQUEST),
 						MessageTemplate.MatchOntology("ontologia")));
 				System.out.println("Agente interfaz a su servicio");
@@ -53,13 +48,11 @@ public class AgenteInterfaz extends AgentBase {
 
 					JFramePrincipal window = new JFramePrincipal(this.myAgent, mensajes.toArray());
 					window.initialize();
-					window.getFrame().setVisible(true);
+					//window.getFrame().setVisible(true);
 					window.setTitle("Voice Search");
 					window.setResizable(false);	
 					window.setVisible(true);
-					window.setLocationRelativeTo(null);
-
-					temp = "";
+					window.setLocationRelativeTo(null);				
 				} catch (UnreadableException e) {
 					e.printStackTrace();
 				}

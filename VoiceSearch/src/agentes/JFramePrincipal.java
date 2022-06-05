@@ -1,10 +1,14 @@
 package agentes;
 
 import agentes.AgenteInterfaz;
+import agentes.launcher.Main;
 import jade.core.Agent;
+import jade.wrapper.ControllerException;
+import other.Utils;
 
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
@@ -15,6 +19,8 @@ import javax.swing.JTextArea;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.awt.event.ActionEvent;
 
 @SuppressWarnings("serial")
@@ -51,12 +57,18 @@ public class JFramePrincipal extends JFrame {
 		etiqueta.setFont(new Font("Helvetica", Font.PLAIN, 30));
 		add(etiqueta);
 
-		JButton btnBuscar = new JButton("Obtener información");
+		JButton btnBuscar = new JButton("Buscar otra cancion");
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//Enviamos el texto que ha introducido el Cliente
-//				String texto = etiqueta.getText();
-//				String artistAbstract; 
+//				WindowEvent closingEvent = new WindowEvent(frame, WindowEvent.WINDOW_CLOSING);
+//				Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(closingEvent);
+				frame.setVisible(false);
+				try {
+					Main.getCc().getAgent(AgenteMicrophone.NICKNAME).activate();
+				} catch (ControllerException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		btnBuscar.setBounds(391, 55, 200, 50);
@@ -72,12 +84,15 @@ public class JFramePrincipal extends JFrame {
 
 		
 		JLabel lblIntroduzcaTextoA = new JLabel("Se ha detectado el siguiente artista:");
-		lblIntroduzcaTextoA.setBounds(61, 46, 232, 20);
+		lblIntroduzcaTextoA.setBounds(61, 46, 532, 20);
 		lblIntroduzcaTextoA.setForeground(Color.white);
 		getContentPane().add(lblIntroduzcaTextoA);
 
 		JTextArea textArea_1 = new JTextArea((String) objects[1]);
 		textArea_1.setBounds(61, 192, 561, 238);
+		textArea_1.setText((String) objects[1]);
+		textArea_1.setLineWrap(true);
+        textArea_1.setWrapStyleWord(true);
 		getContentPane().add(textArea_1);
 		area = textArea_1;
 		myAgent.doWake();
